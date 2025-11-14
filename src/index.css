@@ -2,45 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
 @layer base {
   :root {
     --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-geist: 'Geist', system-ui, sans-serif;
-    --font-geist-mono: 'Geist Mono', monospace;
-    --font-mona: 'Mona Sans', system-ui, sans-serif;
-    --font-ibm-plex: 'IBM Plex Sans', system-ui, sans-serif;
-    --font-manrope: 'Manrope', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   }
 
-  html {
-    font-family: var(--font-sans);
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
+  html { font-family: var(--font-sans); }
+  body { @apply antialiased bg-[#0B0B0B] text-neutral-100; }
 
-  body {
-    @apply antialiased;
-  }
+  /* High contrast toggle */
+  .hc body { filter: contrast(1.2) saturate(1.1); }
 }
 
-/* Custom utility classes for shadcn/ui patterns */
-@layer utilities {
-  .animate-in {
-    animation-name: animateIn;
-    animation-duration: 350ms;
-    --tw-enter-opacity: initial;
-    --tw-enter-scale: initial;
-    --tw-enter-rotate: initial;
-    --tw-enter-translate-x: initial;
-    --tw-enter-translate-y: initial;
-  }
-
-  .animate-out {
-    animation-name: animateOut;
-    animation-duration: 350ms;
-    --tw-exit-opacity: initial;
-    --tw-exit-scale: initial;
-    --tw-exit-rotate: initial;
-    --tw-exit-translate-x: initial;
-    --tw-exit-translate-y: initial;
-  }
+/* Glitch text effect */
+.glitch-text {
+  position: relative;
+  text-shadow: 0 0 6px rgba(0,255,102,0.6);
+  font-family: var(--font-mono);
 }
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.glitch-text::before { color: rgba(0,255,102,0.8); transform: translate(1px,0); clip-path: inset(0 0 50% 0); }
+.glitch-text::after { color: rgba(0,255,255,0.5); transform: translate(-1px,0); clip-path: inset(50% 0 0 0); }
+@media (prefers-reduced-motion: no-preference) {
+  .glitch-text::before { animation: glitchTop 2s infinite steps(8,end); }
+  .glitch-text::after { animation: glitchBot 2.5s infinite steps(8,end); }
+}
+@keyframes glitchTop { 0%{transform:translate(1px,0)} 50%{transform:translate(2px,-0.5px)} 100%{transform:translate(1px,0)} }
+@keyframes glitchBot { 0%{transform:translate(-1px,0)} 50%{transform:translate(-2px,0.5px)} 100%{transform:translate(-1px,0)} }
+
+/* Focus styles */
+:focus-visible { outline: 2px solid #00FF66; outline-offset: 2px; }
+
+/* Subtle scanlines overlay helper */
+.scanlines { background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 100% 3px; }
+
+/* Smooth transitions */
+* { transition: color .2s ease, background-color .2s ease, border-color .2s ease; }
