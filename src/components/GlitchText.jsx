@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import './glitch.css';
 
 export default function GlitchText({ text, className = '' }){
   const ref = useRef(null);
